@@ -42,6 +42,12 @@ export default async function AdminPage() {
     .order("created_at", { ascending: false })
     .limit(200);
 
+  // ✅ FIX: normalize profiles from array → object
+  const formattedLogs = (logs ?? []).map((log) => ({
+    ...log,
+    profiles: log.profiles?.[0] || null,
+  }));
+
   // Platform totals
   const { count: totalLeads } = await supabase
     .from("leads").select("*", { count: "exact", head: true });
@@ -59,7 +65,7 @@ export default async function AdminPage() {
   return (
     <AdminClient
       recruiterStats={recruiterStats ?? []}
-      logs={logs ?? []}
+      logs={formattedLogs} 
       platformStats={{
         totalLeads: totalLeads ?? 0,
         totalDownloads: totalDownloads ?? 0,
