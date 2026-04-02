@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { DM_Sans, DM_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
+import { DM_Mono } from "next/font/google";
 import "./globals.css";
 
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   weight: ["300", "400", "500", "600", "700"],
@@ -19,14 +20,10 @@ export const metadata: Metadata = {
   description: "Legal lead prospecting platform",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${dmMono.variable}`}>
-      <body className="bg-[#080c14] text-white antialiased">{children}</body>
+    <html lang="en" className={`${inter.variable} ${dmMono.variable}`}>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

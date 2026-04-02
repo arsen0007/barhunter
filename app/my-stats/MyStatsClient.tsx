@@ -105,7 +105,7 @@ export default function MyStatsClient({ profile, logs, summary }: Props) {
 
         <div className="rounded-xl p-4" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
           <div className="text-xs mb-1" style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>LEADS EXPORTED</div>
-          <div className="text-2xl font-bold" style={{ color: "var(--amber)" }}>{summary.totalLeads.toLocaleString()}</div>
+          <div className="text-2xl font-bold" style={{ color: "var(--crimson)" }}>{summary.totalLeads.toLocaleString()}</div>
           <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>total leads downloaded</div>
         </div>
 
@@ -127,7 +127,7 @@ export default function MyStatsClient({ profile, logs, summary }: Props) {
       </div>
 
       {/* Activity chart — last 14 days */}
-      <div className="rounded-2xl p-5 mb-8"
+      <div className="rounded-lg p-5 mb-8"
         style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
         <div className="flex items-center justify-between mb-5">
           <div>
@@ -149,15 +149,15 @@ export default function MyStatsClient({ profile, logs, summary }: Props) {
                 {/* Tooltip */}
                 {day.leads > 0 && (
                   <div className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10"
-                    style={{ background: "var(--bg-raised)", border: "1px solid var(--border)", borderRadius: "6px", padding: "4px 8px", whiteSpace: "nowrap" }}>
-                    <span className="text-xs font-medium" style={{ color: "var(--amber)" }}>{day.leads.toLocaleString()} leads</span>
+                    style={{ background: "var(--section-header)", border: "1px solid var(--border)", borderRadius: "6px", padding: "4px 8px", whiteSpace: "nowrap" }}>
+                    <span className="text-xs font-medium" style={{ color: "var(--crimson)" }}>{day.leads.toLocaleString()} leads</span>
                     <span className="text-xs" style={{ color: "var(--text-muted)" }}> · {day.count} download{day.count !== 1 ? "s" : ""}</span>
                   </div>
                 )}
                 <div className="w-full rounded-sm transition-all"
                   style={{
                     height: day.leads > 0 ? `${Math.max((day.leads / maxLeads) * 96, 4)}px` : "3px",
-                    background: day.leads > 0 ? "var(--amber)" : "var(--border)",
+                    background: day.leads > 0 ? "var(--crimson)" : "var(--border)",
                     opacity: day.leads > 0 ? 1 : 0.4,
                   }}
                 />
@@ -171,12 +171,12 @@ export default function MyStatsClient({ profile, logs, summary }: Props) {
       </div>
 
       {/* Download history table */}
-      <div className="rounded-2xl overflow-hidden"
+      <div className="rounded-lg overflow-hidden"
         style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
 
         {/* Table header */}
         <div className="flex items-center justify-between px-5 py-4"
-          style={{ borderBottom: "1px solid var(--border)", background: "var(--bg-raised)" }}>
+          style={{ borderBottom: "1px solid var(--border)", background: "var(--section-header)" }}>
           <div>
             <p className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>Download History</p>
             <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{logs.length} total downloads</p>
@@ -192,12 +192,12 @@ export default function MyStatsClient({ profile, logs, summary }: Props) {
                 onChange={(e) => setSearch(e.target.value)}
                 className="pl-8 pr-4 py-1.5 rounded-lg text-sm w-56"
                 style={{
-                  background: "var(--bg-base)",
+                  background: "var(--bg-page)",
                   border: "1px solid var(--border)",
                   color: "var(--text-primary)",
                   outline: "none",
                 }}
-                onFocus={(e) => (e.target.style.borderColor = "var(--amber)")}
+                onFocus={(e) => (e.target.style.borderColor = "var(--crimson)")}
                 onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
               />
               <svg className="absolute left-2.5 top-1/2 -translate-y-1/2" width="12" height="12"
@@ -227,7 +227,7 @@ export default function MyStatsClient({ profile, logs, summary }: Props) {
               <tr style={{ borderBottom: "1px solid var(--border)" }}>
                 {["Filters Used", "Leads Downloaded", "File Name", "When"].map((h) => (
                   <th key={h} className="text-left px-5 py-3 text-xs font-medium"
-                    style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)", background: "var(--bg-raised)" }}>
+                    style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)", background: "var(--section-header)" }}>
                     {h}
                   </th>
                 ))}
@@ -237,7 +237,7 @@ export default function MyStatsClient({ profile, logs, summary }: Props) {
               {filtered.map((log, i) => (
                 <tr key={log.id}
                   style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg-hover)")}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#f7f9fc")}
                   onMouseLeave={(e) => (e.currentTarget.style.background = i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)")}>
 
                   {/* Filters */}
@@ -247,7 +247,7 @@ export default function MyStatsClient({ profile, logs, summary }: Props) {
                         .filter(([, v]) => v)
                         .map(([k, v]) => (
                           <span key={k} className="px-2 py-0.5 rounded text-xs"
-                            style={{ background: "var(--bg-hover)", border: "1px solid var(--border)", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>
+                            style={{ background: "#f7f9fc", border: "1px solid var(--border)", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>
                             {k === "admission_year" ? `After ${v}` : v}
                           </span>
                         ))}
@@ -259,7 +259,7 @@ export default function MyStatsClient({ profile, logs, summary }: Props) {
 
                   {/* Lead count */}
                   <td className="px-5 py-3">
-                    <span className="text-base font-bold" style={{ color: "var(--amber)", fontFamily: "var(--font-mono)" }}>
+                    <span className="text-base font-bold" style={{ color: "var(--crimson)", fontFamily: "var(--font-mono)" }}>
                       {log.leads_before_conflict?.toLocaleString() ?? "—"}
                     </span>
                     <span className="text-xs ml-1" style={{ color: "var(--text-muted)" }}>leads</span>

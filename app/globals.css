@@ -3,56 +3,62 @@
 @tailwind utilities;
 
 :root {
-  --font-sans: "DM Sans", sans-serif;
-  --font-mono: "DM Mono", monospace;
+  --font-sans:      "Inter", sans-serif;
+  --font-mono:      "DM Mono", monospace;
 
-  /* BarHunter color system */
-  --bg-base: #080c14;
-  --bg-surface: #0e1420;
-  --bg-raised: #141c2e;
-  --bg-hover: #1a2438;
-  --border: #1e2d47;
-  --border-bright: #2a3f5f;
+  /* ── Light enterprise palette ── */
+  --bg-page:        #f4f6f9;
+  --bg-surface:     #ffffff;
+  --bg-raised:      #f8f9fb;
+  --bg-hover:       #f0f3f7;
+  --border:         #e2e6ed;
+  --border-strong:  #c8cfd9;
 
-  --amber: #e8a020;
-  --amber-bright: #f5b535;
-  --amber-dim: #c4851a;
-  --amber-glow: rgba(232, 160, 32, 0.15);
+  /* Sidebar */
+  --sidebar-bg:          #1e2a3a;
+  --sidebar-hover:       #273447;
+  --sidebar-active:      #2e3d52;
+  --sidebar-text:        #8fa3bc;
+  --sidebar-active-text: #ffffff;
 
-  --text-primary: #f0f4ff;
-  --text-secondary: #8899bb;
-  --text-muted: #4a5a7a;
+  /* Accent — crimson */
+  --crimson:        #8b1a1a;
+  --crimson-hover:  #7a1616;
+  --crimson-light:  rgba(139,26,26,0.08);
+  --crimson-border: rgba(139,26,26,0.2);
+
+  /* Section header tint */
+  --section-header: #e8f2f8;
+  --section-border: #c5dcea;
+
+  /* Text */
+  --text-primary:   #1a2332;
+  --text-secondary: #4a5568;
+  --text-muted:     #8a9ab0;
+
+  /* Stat accents */
+  --stat-red:    #e53e3e;
+  --stat-orange: #dd6b20;
+  --stat-green:  #38a169;
+  --stat-blue:   #3182ce;
+  --stat-gray:   #718096;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   font-family: var(--font-sans);
-  background: var(--bg-base);
+  background: var(--bg-page);
   color: var(--text-primary);
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-surface);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--border-bright);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--amber-dim);
-}
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-raised); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* Focus ring */
-*:focus-visible {
-  outline: 2px solid var(--amber);
-  outline-offset: 2px;
-}
+*:focus-visible { outline: 2px solid var(--crimson); outline-offset: 2px; }
+
+input, select, textarea { font-family: var(--font-sans); }

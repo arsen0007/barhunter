@@ -346,15 +346,15 @@ function ConflictModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: "rgba(0,0,0,0.75)", backdropFilter: "blur(4px)" }}
+      style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)" }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
 
       <div className="w-full max-w-lg rounded-2xl overflow-hidden"
-        style={{ background: "var(--bg-surface)", border: "1px solid var(--border)", boxShadow: "0 24px 64px rgba(0,0,0,0.6)" }}>
+        style={{ background: "var(--bg-surface)", border: "1px solid var(--border)", boxShadow: "0 20px 60px rgba(0,0,0,0.2)", borderRadius: "8px" }}>
 
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4"
-          style={{ borderBottom: "1px solid var(--border)", background: "var(--bg-raised)" }}>
+          style={{ borderBottom: "1px solid var(--border)", background: "var(--section-header)" }}>
           <div>
             <h2 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>
               Conflict Check
@@ -369,10 +369,10 @@ function ConflictModal({
               <div key={s} className="flex items-center gap-1">
                 <div className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold"
                   style={{
-                    background: step === s ? "var(--amber)" : (
+                    background: step === s ? "var(--crimson)" : (
                       ["upload", "map", "result"].indexOf(step) > i ? "rgba(232,160,32,0.3)" : "var(--bg-hover)"
                     ),
-                    color: step === s ? "#080c14" : "var(--text-muted)",
+                    color: step === s ? "#ffffff" : "var(--text-muted)",
                   }}>
                   {i + 1}
                 </div>
@@ -464,7 +464,7 @@ function ConflictModal({
                     <span className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>{label}</span>
                     {required && (
                       <span className="text-xs px-1.5 py-0.5 rounded"
-                        style={{ background: "rgba(232,160,32,0.1)", color: "var(--amber)", border: "1px solid rgba(232,160,32,0.2)" }}>
+                        style={{ background: "var(--crimson-light)", color: "var(--crimson)", border: "1px solid var(--crimson-border)" }}>
                         required
                       </span>
                     )}
@@ -475,7 +475,7 @@ function ConflictModal({
                     className="flex-1 px-3 py-2 rounded-lg text-sm"
                     style={{
                       background: "var(--bg-raised)",
-                      border: `1px solid ${colMap[key] ? "var(--amber)" : "var(--border)"}`,
+                      border: `1px solid ${colMap[key] ? "var(--crimson)" : "var(--border-strong)"}`,
                       color: colMap[key] ? "var(--text-primary)" : "var(--text-muted)",
                     }}>
                     <option value="">— not mapped —</option>
@@ -491,9 +491,9 @@ function ConflictModal({
             {emailPreview && (
               <div className="rounded-lg px-4 py-3 mb-5 flex items-center gap-3"
                 style={{ background: "rgba(74,222,128,0.06)", border: "1px solid rgba(74,222,128,0.15)" }}>
-                <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: "#4ade80" }} />
+                <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: "var(--stat-green)" }} />
                 <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
-                  Found <span className="font-bold" style={{ color: "#4ade80" }}>{emailPreview.total.toLocaleString()}</span> emails
+                  Found <span className="font-bold" style={{ color: "var(--stat-green)" }}>{emailPreview.total.toLocaleString()}</span> emails
                   across <span className="font-semibold">{emailPreview.rows.toLocaleString()}</span> rows after cleaning
                   {emailPreview.total > emailPreview.rows && (
                     <span style={{ color: "var(--text-muted)" }}>
@@ -547,7 +547,7 @@ function ConflictModal({
               <button onClick={runCheck}
                 disabled={!colMap.first || !colMap.email}
                 className="flex-1 py-2 rounded-xl text-sm font-semibold disabled:opacity-40"
-                style={{ background: "var(--amber)", color: "#080c14" }}>
+                style={{ background: "var(--crimson)", color: "#ffffff", borderRadius: "6px" }}>
                 Run Conflict Check
               </button>
             </div>
@@ -570,7 +570,7 @@ function ConflictModal({
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-bold" style={{ color: "#4ade80" }}>
+                  <p className="text-2xl font-bold" style={{ color: "var(--stat-green)" }}>
                     {result.clean.length.toLocaleString()}
                   </p>
                   <p className="text-xs" style={{ color: "var(--text-muted)" }}>clean leads</p>
@@ -649,19 +649,19 @@ function ConflictModal({
                 {totalRemoved === 0 && (
                   <div className="flex items-center gap-2 py-2 px-3 rounded-lg"
                     style={{ background: "rgba(74,222,128,0.06)" }}>
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#4ade80" }} />
-                    <span className="text-xs" style={{ color: "#4ade80" }}>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: "var(--stat-green)" }} />
+                    <span className="text-xs" style={{ color: "var(--stat-green)" }}>
                       No conflicts found — all leads are clean
                     </span>
                   </div>
                 )}
 
                 <div className="flex items-center justify-between py-2 pt-3"
-                  style={{ borderTop: "1px solid var(--border)" }}>
+                  style={{ borderTop: "1px solid var(--border)", background: "var(--bg-raised)" }}>
                   <span className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>
                     Clean leads ready
                   </span>
-                  <span className="font-mono font-bold text-base" style={{ color: "#4ade80" }}>
+                  <span className="font-mono font-bold text-base" style={{ color: "var(--stat-green)" }}>
                     {result.clean.length.toLocaleString()}
                   </span>
                 </div>
@@ -671,7 +671,7 @@ function ConflictModal({
             <div className="flex flex-col gap-2">
               <button onClick={downloadClean}
                 className="w-full py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2"
-                style={{ background: "var(--amber)", color: "#080c14", boxShadow: "0 0 20px var(--amber-glow)" }}>
+                style={{ background: "var(--crimson)", color: "#ffffff", borderRadius: "6px" }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                   <polyline points="7 10 12 15 17 10" />
@@ -700,13 +700,118 @@ function ConflictModal({
   );
 }
 
+
+// ── MULTI-SELECT DROPDOWN ──
+// Checkbox list in a dropdown panel. Supports "Unknown / Not Listed" option.
+function MultiSelect({
+  label,
+  options,
+  selected,
+  onChange,
+  placeholder = "All",
+  includeUnknown = false,
+  disabled = false,
+}: {
+  label: string;
+  options: string[];
+  selected: string[];
+  onChange: (vals: string[]) => void;
+  placeholder?: string;
+  includeUnknown?: boolean;
+  disabled?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  function toggle(val: string) {
+    onChange(selected.includes(val) ? selected.filter(v => v !== val) : [...selected, val]);
+  }
+
+  const allOptions = includeUnknown ? [...options, "__unknown__"] : options;
+  const displayLabel = (v: string) => v === "__unknown__" ? "Unknown / Not Listed" : v;
+
+  const buttonLabel = selected.length === 0
+    ? placeholder
+    : selected.length === 1
+      ? displayLabel(selected[0])
+      : `${selected.length} selected`;
+
+  return (
+    <div ref={ref} className="relative">
+      <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "#4a5568" }}>
+        {label}
+      </label>
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={() => setOpen(o => !o)}
+        className="w-full px-3 py-2.5 text-sm text-left flex items-center justify-between disabled:opacity-40"
+        style={{
+          background: "#f8f9fb",
+          border: `1px solid ${open ? "#8b1a1a" : "#e2e6ed"}`,
+          borderRadius: "8px",
+          color: selected.length > 0 ? "#1a2332" : "#8a9ab0",
+          outline: "none",
+        }}
+      >
+        <span className="truncate">{buttonLabel}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+          style={{ flexShrink: 0, marginLeft: "6px", transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s" }}>
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+
+      {open && (
+        <div className="absolute z-50 w-full mt-1 rounded-lg overflow-hidden"
+          style={{ background: "#fff", border: "1px solid #e2e6ed", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", maxHeight: "240px", overflowY: "auto" }}>
+          {/* Clear all */}
+          {selected.length > 0 && (
+            <button type="button" onClick={() => onChange([])}
+              className="w-full px-3 py-2 text-xs text-left font-medium"
+              style={{ color: "#8b1a1a", borderBottom: "1px solid #f0f3f7" }}>
+              Clear all ({selected.length} selected)
+            </button>
+          )}
+          {allOptions.length === 0 && (
+            <div className="px-3 py-3 text-xs" style={{ color: "#8a9ab0" }}>No options available</div>
+          )}
+          {allOptions.map(opt => (
+            <label key={opt}
+              className="flex items-center gap-2.5 px-3 py-2 cursor-pointer text-sm"
+              style={{
+                background: selected.includes(opt) ? "#fdf5f5" : "transparent",
+                color: "#1a2332",
+              }}
+              onMouseEnter={(e) => { if (!selected.includes(opt)) e.currentTarget.style.background = "#f8f9fb"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = selected.includes(opt) ? "#fdf5f5" : "transparent"; }}>
+              <input type="checkbox" checked={selected.includes(opt)} onChange={() => toggle(opt)}
+                style={{ accentColor: "#8b1a1a", width: "14px", height: "14px", flexShrink: 0 }} />
+              <span style={{ color: opt === "__unknown__" ? "#8a9ab0" : "#1a2332", fontStyle: opt === "__unknown__" ? "italic" : "normal" }}>
+                {displayLabel(opt)}
+              </span>
+            </label>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── MAIN COMPONENT ──
 export default function LeadsClient({ states }: Props) {
-  const [selState, setSelState] = useState("");
-  const [selCity, setSelCity] = useState("");
-  const [selCategory, setSelCategory] = useState("");
-  const [selYear, setSelYear] = useState("");
-  const [selStatus, setSelStatus] = useState("Active");
+  const [selStates, setSelStates]       = useState<string[]>([]);
+  const [selCities, setSelCities]       = useState<string[]>([]);
+  const [selCategories, setSelCategories] = useState<string[]>([]);
+  const [selYear, setSelYear]           = useState("");
+  const [selStatus, setSelStatus]       = useState("Active");
 
   const [cities, setCities] = useState<string[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -720,22 +825,26 @@ export default function LeadsClient({ states }: Props) {
   const [showConflict, setShowConflict] = useState(false);
   const [allLeads, setAllLeads] = useState<Lead[]>([]);
 
-  const currentFilters = { state: selState, city: selCity, category: selCategory, year: selYear, status: selStatus };
+  const currentFilters = { state: selStates.join(","), city: selCities.join(","), category: selCategories.join(","), year: selYear, status: selStatus };
 
   useEffect(() => {
-    setSelCity(""); setCities([]);
-    if (!selState) return;
-    fetch(`/api/cities?state=${selState}`)
-      .then((r) => r.json()).then((d) => setCities(d.cities ?? []));
-  }, [selState]);
+    setSelCities([]); setCities([]);
+    if (selStates.length === 0) return;
+    // Fetch cities for all selected states
+    Promise.all(selStates.map(s => fetch(`/api/cities?state=${s}`).then(r => r.json())))
+      .then(results => {
+        const allCities = Array.from(new Set(results.flatMap(d => d.cities ?? []))).sort();
+        setCities(allCities);
+      });
+  }, [JSON.stringify(selStates)]);
 
   function buildParams(extra?: Record<string, string>) {
     const p = new URLSearchParams();
-    if (selState) p.set("state", selState);
-    if (selCity) p.set("city", selCity);
-    if (selCategory) p.set("category", selCategory);
-    if (selYear) p.set("admissionYear", selYear);
-    if (selStatus) p.set("status", selStatus);
+    if (selStates.length > 0)     p.set("state",       selStates.join(","));
+    if (selCities.length > 0)     p.set("city",        selCities.join(","));
+    if (selCategories.length > 0) p.set("category",    selCategories.join(","));
+    if (selYear)                  p.set("admissionYear", selYear);
+    if (selStatus)                p.set("status",      selStatus);
     if (extra) Object.entries(extra).forEach(([k, v]) => p.set(k, v));
     return p;
   }
@@ -747,7 +856,8 @@ export default function LeadsClient({ states }: Props) {
     setLeads(json.data ?? []); setTotalCount(json.count ?? 0);
     setPage(pageNum); setLoading(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selState, selCity, selCategory, selYear, selStatus]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(selStates), JSON.stringify(selCities), JSON.stringify(selCategories), selYear, selStatus]);
 
   // Open conflict modal — fetch ALL leads first
   async function openConflictModal() {
@@ -782,8 +892,8 @@ export default function LeadsClient({ states }: Props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         filters_json: {
-          state: selState || null, city: selCity || null,
-          category: selCategory || null, admission_year: selYear || null,
+          state: selStates.join(",") || null, city: selCities.join(",") || null,
+          category: selCategories.join(",") || null, admission_year: selYear || null,
           status: selStatus || null,
         },
         leads_count: before,
@@ -794,16 +904,17 @@ export default function LeadsClient({ states }: Props) {
   }
 
   function handleReset() {
-    setSelState(""); setSelCity(""); setSelCategory(""); setSelYear(""); setSelStatus("Active");
+    setSelStates([]); setSelCities([]); setSelCategories([]); setSelYear(""); setSelStatus("Active");
     setLeads([]); setTotalCount(null); setHasQueried(false); setPage(1);
   }
 
   const totalPages = totalCount ? Math.ceil(totalCount / 100) : 0;
-  const hasFilters = selState || selCity || selCategory || selYear || selStatus !== "Active";
+  const hasFilters = selStates.length > 0 || selCities.length > 0 || selCategories.length > 0 || selYear || selStatus !== "Active";
 
   const selectStyle = (hasValue: boolean) => ({
-    background: "var(--bg-raised)", border: "1px solid var(--border)",
+    background: "var(--bg-surface)", border: "1px solid var(--border-strong)",
     color: hasValue ? "var(--text-primary)" : "var(--text-muted)",
+    borderRadius: "4px",
   });
 
   return (
@@ -820,62 +931,125 @@ export default function LeadsClient({ states }: Props) {
       )}
 
       {/* FILTER BAR */}
-      <div className="rounded-2xl p-5 mb-6" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
-        <div className="flex flex-wrap gap-3 items-end">
-          <div className="flex flex-col gap-1.5 min-w-[140px]">
-            <label className="text-xs font-medium" style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>STATE</label>
-            <select value={selState} onChange={(e) => setSelState(e.target.value)} className="px-3 py-2 rounded-lg text-sm" style={selectStyle(!!selState)}>
-              <option value="">All states</option>
-              {states.map((s) => <option key={s} value={s}>{s}</option>)}
-            </select>
-          </div>
-          <div className="flex flex-col gap-1.5 min-w-[180px]">
-            <label className="text-xs font-medium" style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>CITY</label>
-            <select value={selCity} onChange={(e) => setSelCity(e.target.value)} disabled={!selState || cities.length === 0}
-              className="px-3 py-2 rounded-lg text-sm disabled:opacity-40" style={selectStyle(!!selCity)}>
-              <option value="">All cities</option>
-              {cities.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
-          </div>
-          <div className="flex flex-col gap-1.5 min-w-[220px]">
-            <label className="text-xs font-medium" style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>PRACTICE CATEGORY</label>
-            <select value={selCategory} onChange={(e) => setSelCategory(e.target.value)} className="px-3 py-2 rounded-lg text-sm" style={selectStyle(!!selCategory)}>
-              <option value="">All categories</option>
-              {MAIN_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
-          </div>
-          <div className="flex flex-col gap-1.5 min-w-[160px]">
-            <label className="text-xs font-medium" style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>ADMITTED AFTER</label>
-            <select value={selYear} onChange={(e) => setSelYear(e.target.value)} className="px-3 py-2 rounded-lg text-sm" style={selectStyle(!!selYear)}>
+      <div className="rounded-xl p-6 mb-6"
+        style={{ background: "#ffffff", border: "1px solid #e2e6ed", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
+        <div className="grid gap-4 mb-5" style={{ gridTemplateColumns: "1fr 1fr 2fr 1.2fr 1.2fr" }}>
+
+          {/* State — multi-select */}
+          <MultiSelect
+            label="State"
+            options={states}
+            selected={selStates}
+            onChange={setSelStates}
+            placeholder="All states"
+          />
+
+          {/* City — multi-select, depends on state */}
+          <MultiSelect
+            label="City"
+            options={cities}
+            selected={selCities}
+            onChange={setSelCities}
+            placeholder="All cities"
+            includeUnknown={true}
+            disabled={selStates.length === 0}
+          />
+
+          {/* Practice Category — multi-select */}
+          <MultiSelect
+            label="Practice Category"
+            options={MAIN_CATEGORIES}
+            selected={selCategories}
+            onChange={setSelCategories}
+            placeholder="All categories"
+            includeUnknown={true}
+          />
+
+          {/* Admitted After — single (range filter) */}
+          <div>
+            <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "#4a5568" }}>
+              Admitted After
+            </label>
+            <select value={selYear} onChange={(e) => setSelYear(e.target.value)} className="w-full px-3 py-2.5 text-sm"
+              style={{ background: "#f8f9fb", border: "1px solid #e2e6ed", borderRadius: "8px", color: selYear ? "#1a2332" : "#8a9ab0", outline: "none" }}>
               <option value="">Any year</option>
               {ADMISSION_YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
             </select>
           </div>
-          <div className="flex flex-col gap-1.5 min-w-[150px]">
-            <label className="text-xs font-medium" style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>STATUS</label>
-            <select value={selStatus} onChange={(e) => setSelStatus(e.target.value)} className="px-3 py-2 rounded-lg text-sm"
-              style={{ background: "var(--bg-raised)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
+
+          {/* Status — single */}
+          <div>
+            <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "#4a5568" }}>
+              Status
+            </label>
+            <select value={selStatus} onChange={(e) => setSelStatus(e.target.value)} className="w-full px-3 py-2.5 text-sm"
+              style={{ background: "#f8f9fb", border: "1px solid #e2e6ed", borderRadius: "8px", color: "#1a2332", outline: "none" }}>
               <option value="">All statuses</option>
               <option value="Active">Active only</option>
               <option value="Not Active">Not Active only</option>
             </select>
           </div>
-          <div className="flex-1" />
-          <div className="flex gap-2">
-            {hasFilters && (
-              <button onClick={handleReset} className="px-4 py-2 rounded-lg text-sm font-medium"
-                style={{ background: "var(--bg-raised)", border: "1px solid var(--border)", color: "var(--text-secondary)" }}>
-                Reset
-              </button>
+        </div>
+
+        {/* Selected filter tags */}
+        {hasFilters && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {selStates.map(s => (
+              <span key={s} className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium"
+                style={{ background: "#fdf5f5", border: "1px solid #f0c0c0", color: "#8b1a1a" }}>
+                {s}
+                <button onClick={() => setSelStates(selStates.filter(x => x !== s))} style={{ lineHeight: 1 }}>×</button>
+              </span>
+            ))}
+            {selCities.map(s => (
+              <span key={s} className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium"
+                style={{ background: "#fdf5f5", border: "1px solid #f0c0c0", color: "#8b1a1a" }}>
+                {s === "__unknown__" ? "City: Unknown" : s}
+                <button onClick={() => setSelCities(selCities.filter(x => x !== s))} style={{ lineHeight: 1 }}>×</button>
+              </span>
+            ))}
+            {selCategories.map(s => (
+              <span key={s} className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium"
+                style={{ background: "#fdf5f5", border: "1px solid #f0c0c0", color: "#8b1a1a" }}>
+                {s === "__unknown__" ? "Category: Unknown" : s}
+                <button onClick={() => setSelCategories(selCategories.filter(x => x !== s))} style={{ lineHeight: 1 }}>×</button>
+              </span>
+            ))}
+            {selYear && (
+              <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium"
+                style={{ background: "#fdf5f5", border: "1px solid #f0c0c0", color: "#8b1a1a" }}>
+                After {selYear}
+                <button onClick={() => setSelYear("")} style={{ lineHeight: 1 }}>×</button>
+              </span>
             )}
-            <button onClick={() => fetchLeads(1)} disabled={loading}
-              className="px-5 py-2 rounded-lg text-sm font-semibold disabled:opacity-50"
-              style={{ background: "var(--amber)", color: "#080c14", boxShadow: "0 0 16px var(--amber-glow)" }}>
-              {loading ? "Loading..." : "Search Leads"}
-            </button>
+            {selStatus && selStatus !== "Active" && (
+              <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium"
+                style={{ background: "#fdf5f5", border: "1px solid #f0c0c0", color: "#8b1a1a" }}>
+                {selStatus}
+                <button onClick={() => setSelStatus("Active")} style={{ lineHeight: 1 }}>×</button>
+              </span>
+            )}
           </div>
+        )}
+
+        <div className="flex items-center justify-end gap-3">
+          {hasFilters && (
+            <button onClick={handleReset} className="px-4 py-2.5 text-sm font-medium rounded-lg"
+              style={{ background: "#f8f9fb", border: "1px solid #e2e6ed", color: "#4a5568" }}>
+              Reset all
+            </button>
+          )}
+          <button onClick={() => fetchLeads(1)} disabled={loading}
+            className="px-6 py-2.5 text-sm font-semibold rounded-lg disabled:opacity-50"
+            style={{ background: "#8b1a1a", color: "#ffffff" }}
+            onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "#7a1616"; }}
+            onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = "#8b1a1a"; }}>
+            {loading ? "Loading..." : "Search Leads"}
+          </button>
         </div>
       </div>
+
+
 
       {/* RESULTS HEADER */}
       {hasQueried && (
@@ -883,7 +1057,7 @@ export default function LeadsClient({ states }: Props) {
           <span className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
             {loading ? "Searching..." : (
               <>
-                <span style={{ color: "var(--amber)", fontFamily: "var(--font-mono)", fontSize: "1.1em" }}>
+                <span style={{ color: "var(--crimson)", fontWeight: "700" }}>
                   {totalCount?.toLocaleString()}
                 </span>{" "}leads found
                 {totalCount && totalCount > 100 && (
@@ -896,7 +1070,7 @@ export default function LeadsClient({ states }: Props) {
           {totalCount! > 0 && !loading && (
             <button onClick={openConflictModal} disabled={fetching}
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-50"
-              style={{ background: "var(--amber)", color: "#080c14", boxShadow: "0 0 16px var(--amber-glow)" }}
+              style={{ background: "var(--crimson)", color: "#ffffff", borderRadius: "4px" }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -911,7 +1085,7 @@ export default function LeadsClient({ states }: Props) {
 
       {/* EMPTY STATES */}
       {!hasQueried && (
-        <div className="rounded-2xl flex flex-col items-center justify-center py-24"
+        <div className="rounded-lg flex flex-col items-center justify-center py-24"
           style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
           <div className="text-3xl mb-3">⚖️</div>
           <p className="font-medium mb-1" style={{ color: "var(--text-primary)" }}>Select filters and search</p>
@@ -919,7 +1093,7 @@ export default function LeadsClient({ states }: Props) {
         </div>
       )}
       {hasQueried && !loading && leads.length === 0 && (
-        <div className="rounded-2xl flex flex-col items-center justify-center py-24"
+        <div className="rounded-lg flex flex-col items-center justify-center py-24"
           style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
           <p className="font-medium mb-1" style={{ color: "var(--text-primary)" }}>No leads found</p>
           <p className="text-sm" style={{ color: "var(--text-muted)" }}>Try adjusting your filters</p>
@@ -928,14 +1102,14 @@ export default function LeadsClient({ states }: Props) {
 
       {/* TABLE */}
       {hasQueried && leads.length > 0 && (
-        <div className="rounded-2xl overflow-hidden" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
+        <div className="rounded-lg overflow-hidden" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)", boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--border)" }}>
                   {["Name", "Email", "Phone", "Company", "Address", "City / State", "Practice Areas", "Admitted", "Status"].map((h) => (
                     <th key={h} className="text-left px-4 py-3 text-xs font-medium whitespace-nowrap"
-                      style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)", background: "var(--bg-raised)" }}>
+                      style={{ color: "var(--text-secondary)", fontFamily: "var(--font-mono)", background: "var(--section-header)", borderBottom: "1px solid var(--section-border)" }}>
                       {h}
                     </th>
                   ))}
@@ -945,13 +1119,13 @@ export default function LeadsClient({ states }: Props) {
                 {leads.map((lead, i) => (
                   <tr key={lead.id}
                     style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg-hover)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)")}>
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "#f7f9fc")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = i % 2 === 0 ? "transparent" : "var(--bg-raised)")}>
                     <td className="px-4 py-3 whitespace-nowrap font-medium" style={{ color: "var(--text-primary)" }}>
                       {[lead.first_name, lead.last_name].filter(Boolean).join(" ") || "—"}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      {lead.email ? <a href={`mailto:${lead.email}`} style={{ color: "var(--amber)", textDecoration: "none" }}
+                      {lead.email ? <a href={`mailto:${lead.email}`} style={{ color: "var(--crimson)", textDecoration: "none" }}
                         onMouseEnter={(e) => (e.currentTarget.style.textDecoration = "underline")}
                         onMouseLeave={(e) => (e.currentTarget.style.textDecoration = "none")}>{lead.email}</a>
                         : <span style={{ color: "var(--text-muted)" }}>—</span>}
@@ -973,13 +1147,13 @@ export default function LeadsClient({ states }: Props) {
                       <div className="flex flex-wrap gap-1">
                         {(lead.practice_areas ?? []).slice(0, 2).map((area) => (
                           <span key={area} className="px-2 py-0.5 rounded text-xs"
-                            style={{ background: "var(--bg-hover)", border: "1px solid var(--border)", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>
+                            style={{ background: "var(--bg-raised)", border: "1px solid var(--border)", color: "var(--text-secondary)", whiteSpace: "nowrap", fontSize: "11px" }}>
                             {area}
                           </span>
                         ))}
                         {(lead.practice_areas ?? []).length > 2 && (
                           <span className="px-2 py-0.5 rounded text-xs"
-                            style={{ background: "var(--amber-glow)", border: "1px solid var(--amber-dim)", color: "var(--amber)" }}>
+                            style={{ background: "var(--crimson-light)", border: "1px solid var(--crimson-border)", color: "var(--crimson)", fontSize: "11px" }}>
                             +{(lead.practice_areas ?? []).length - 2}
                           </span>
                         )}
@@ -992,9 +1166,9 @@ export default function LeadsClient({ states }: Props) {
                     <td className="px-4 py-3">
                       <span className="px-2 py-0.5 rounded-full text-xs font-medium"
                         style={{
-                          background: lead.member_status === "Active" ? "rgba(34,197,94,0.1)" : "rgba(255,255,255,0.05)",
-                          color: lead.member_status === "Active" ? "#4ade80" : "var(--text-muted)",
-                          border: `1px solid ${lead.member_status === "Active" ? "rgba(34,197,94,0.3)" : "var(--border)"}`,
+                          background: lead.member_status === "Active" ? "rgba(56,161,105,0.1)" : "rgba(255,255,255,0.05)",
+                          color: lead.member_status === "Active" ? "var(--stat-green)" : "var(--text-muted)",
+                          border: `1px solid ${lead.member_status === "Active" ? "rgba(56,161,105,0.3)" : "var(--border)"}`,
                         }}>
                         {lead.member_status ?? "—"}
                       </span>
@@ -1005,19 +1179,19 @@ export default function LeadsClient({ states }: Props) {
             </table>
           </div>
           {totalPages > 1 && (
-            <div className="flex items-center justify-between px-4 py-3" style={{ borderTop: "1px solid var(--border)" }}>
+            <div className="flex items-center justify-between px-4 py-3" style={{ borderTop: "1px solid var(--border)", background: "var(--bg-raised)" }}>
               <span className="text-xs" style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
                 Page {page} of {totalPages} · {totalCount?.toLocaleString()} total
               </span>
               <div className="flex gap-2">
                 <button onClick={() => fetchLeads(page - 1)} disabled={page <= 1 || loading}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium disabled:opacity-30"
-                  style={{ background: "var(--bg-raised)", border: "1px solid var(--border)", color: "var(--text-secondary)" }}>
+                  className="px-3 py-1.5 rounded text-xs font-medium disabled:opacity-30"
+                  style={{ background: "var(--bg-surface)", border: "1px solid var(--border-strong)", color: "var(--text-secondary)" }}>
                   ← Prev
                 </button>
                 <button onClick={() => fetchLeads(page + 1)} disabled={page >= totalPages || loading}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium disabled:opacity-30"
-                  style={{ background: "var(--bg-raised)", border: "1px solid var(--border)", color: "var(--text-secondary)" }}>
+                  className="px-3 py-1.5 rounded text-xs font-medium disabled:opacity-30"
+                  style={{ background: "var(--bg-surface)", border: "1px solid var(--border-strong)", color: "var(--text-secondary)" }}>
                   Next →
                 </button>
               </div>

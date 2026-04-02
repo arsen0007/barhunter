@@ -92,7 +92,7 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
       <div className="grid grid-cols-3 gap-4 mb-8">
         {statCard("TOTAL LEADS IN DB", platformStats.totalLeads)}
         {statCard("TOTAL DOWNLOADS", platformStats.totalDownloads)}
-        {statCard("TOTAL LEADS EXPORTED", platformStats.totalLeadsDownloaded, "across all recruiters", "var(--amber)")}
+        {statCard("TOTAL LEADS EXPORTED", platformStats.totalLeadsDownloaded, "across all recruiters", "var(--crimson)")}
       </div>
 
       {/* Tabs */}
@@ -102,8 +102,8 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
           <button key={tab} onClick={() => setActiveTab(tab)}
             className="px-4 py-1.5 rounded-lg text-sm font-medium capitalize transition-all"
             style={{
-              background: activeTab === tab ? "var(--amber)" : "transparent",
-              color: activeTab === tab ? "#080c14" : "var(--text-secondary)",
+              background: activeTab === tab ? "var(--crimson)" : "transparent",
+              color: activeTab === tab ? "#ffffff" : "var(--text-secondary)",
             }}>
             {tab === "overview" ? "Recruiter Overview" : "Download Logs"}
           </button>
@@ -112,7 +112,7 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
 
       {/* ── OVERVIEW TAB ── */}
       {activeTab === "overview" && (
-        <div className="rounded-2xl overflow-hidden"
+        <div className="rounded-lg overflow-hidden"
           style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
           {recruiterStats.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
@@ -125,7 +125,7 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
                 <tr style={{ borderBottom: "1px solid var(--border)" }}>
                   {["Recruiter", "Total Downloads", "Total Leads Exported", "Last Active"].map((h) => (
                     <th key={h} className="text-left px-5 py-3 text-xs font-medium"
-                      style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)", background: "var(--bg-raised)" }}>
+                      style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)", background: "var(--section-header)" }}>
                       {h}
                     </th>
                   ))}
@@ -135,7 +135,7 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
                 {recruiterStats.map((r, i) => (
                   <tr key={r.user_id}
                     style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg-hover)")}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "#f7f9fc")}
                     onMouseLeave={(e) => (e.currentTarget.style.background = i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)")}>
 
                     {/* Recruiter */}
@@ -156,7 +156,7 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
                         </span>
                         {r.total_downloads === 0 && (
                           <span className="text-xs px-2 py-0.5 rounded-full"
-                            style={{ background: "var(--bg-raised)", color: "var(--text-muted)", border: "1px solid var(--border)" }}>
+                            style={{ background: "var(--section-header)", color: "var(--text-muted)", border: "1px solid var(--border)" }}>
                             no activity
                           </span>
                         )}
@@ -166,7 +166,7 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
                     {/* Leads exported */}
                     <td className="px-5 py-4">
                       <span className="text-lg font-bold"
-                        style={{ color: r.total_leads > 0 ? "var(--amber)" : "var(--text-muted)" }}>
+                        style={{ color: r.total_leads > 0 ? "var(--crimson)" : "var(--text-muted)" }}>
                         {r.total_leads.toLocaleString()}
                       </span>
                     </td>
@@ -194,7 +194,7 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
 
       {/* ── LOGS TAB ── */}
       {activeTab === "logs" && (
-        <div className="rounded-2xl overflow-hidden"
+        <div className="rounded-lg overflow-hidden"
           style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
           {logs.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
@@ -204,7 +204,7 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
           ) : (
             <>
               <div className="px-5 py-3 text-xs"
-                style={{ color: "var(--text-muted)", borderBottom: "1px solid var(--border)", background: "var(--bg-raised)" }}>
+                style={{ color: "var(--text-muted)", borderBottom: "1px solid var(--border)", background: "var(--section-header)" }}>
                 Showing last {logs.length} downloads · most recent first
               </div>
               <table className="w-full text-sm border-collapse">
@@ -212,7 +212,7 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
                   <tr style={{ borderBottom: "1px solid var(--border)" }}>
                     {["Recruiter", "Filters Used", "Leads", "File", "Time"].map((h) => (
                       <th key={h} className="text-left px-5 py-3 text-xs font-medium"
-                        style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)", background: "var(--bg-raised)" }}>
+                        style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)", background: "var(--section-header)" }}>
                         {h}
                       </th>
                     ))}
@@ -224,7 +224,7 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
                     return (
                       <tr key={log.id}
                         style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)" }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg-hover)")}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = "#f7f9fc")}
                         onMouseLeave={(e) => (e.currentTarget.style.background = i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)")}>
 
                         {/* Recruiter */}
@@ -244,7 +244,7 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
                               .filter(([, v]) => v)
                               .map(([k, v]) => (
                                 <span key={k} className="px-2 py-0.5 rounded text-xs"
-                                  style={{ background: "var(--bg-hover)", border: "1px solid var(--border)", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>
+                                  style={{ background: "#f7f9fc", border: "1px solid var(--border)", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>
                                   {k === "admission_year" ? `After ${v}` : v}
                                 </span>
                               ))
@@ -257,7 +257,7 @@ export default function AdminClient({ recruiterStats, logs, platformStats }: Pro
 
                         {/* Lead count */}
                         <td className="px-5 py-3">
-                          <span className="font-bold" style={{ color: "var(--amber)", fontFamily: "var(--font-mono)" }}>
+                          <span className="font-bold" style={{ color: "var(--crimson)", fontFamily: "var(--font-mono)" }}>
                             {log.leads_before_conflict?.toLocaleString() ?? "—"}
                           </span>
                         </td>

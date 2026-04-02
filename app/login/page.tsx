@@ -5,167 +5,162 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [error, setError]       = useState<string | null>(null);
+  const [loading, setLoading]   = useState(false);
+  const router   = useRouter();
   const supabase = createClient();
 
   async function handleLogin() {
-    setLoading(true);
-    setError(null);
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-    } else {
-      router.push("/dashboard");
-      router.refresh();
-    }
+    setLoading(true); setError(null);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) { setError(error.message); setLoading(false); }
+    else { router.push("/dashboard"); router.refresh(); }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden"
-      style={{ background: "var(--bg-base)" }}>
-
-      {/* Background grid */}
-      <div className="absolute inset-0 opacity-[0.03]"
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{ background: "#eaecf0" }}
+    >
+      {/* Card */}
+      <div
+        className="w-full max-w-sm rounded-2xl p-10"
         style={{
-          backgroundImage: `
-            linear-gradient(var(--border) 1px, transparent 1px),
-            linear-gradient(90deg, var(--border) 1px, transparent 1px)
-          `,
-          backgroundSize: "48px 48px",
+          background: "#ffffff",
+          boxShadow: "0 4px 32px rgba(0,0,0,0.10)",
         }}
-      />
-
-      {/* Amber glow orb */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.06]"
-        style={{
-          background: "radial-gradient(circle, var(--amber) 0%, transparent 70%)",
-          filter: "blur(40px)",
-        }}
-      />
-
-      {/* Login card */}
-      <div className="relative z-10 w-full max-w-sm mx-4">
-
+      >
         {/* Logo */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: "var(--amber)", boxShadow: "0 0 20px var(--amber-glow)" }}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M8 1L14 4.5V11.5L8 15L2 11.5V4.5L8 1Z" fill="#080c14" fillOpacity="0.9" />
-                <path d="M5 8L7.5 10.5L11 6" stroke="#080c14" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <span className="text-xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>
-              Bar<span style={{ color: "var(--amber)" }}>Hunter</span>
+        <div className="flex flex-col items-center mb-7">
+          <div className="flex items-center gap-2 mb-5">
+            {/* Pin icon in crimson */}
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+                fill="#8b1a1a"
+              />
+              <circle cx="12" cy="9" r="2.5" fill="white" />
+            </svg>
+            <span className="text-2xl font-bold" style={{ color: "#1a2332" }}>
+              Bar<span style={{ color: "#8b1a1a" }}>Hunter</span>
             </span>
           </div>
-          <p className="text-sm" style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
-            Legal Recruitment Intelligence
+
+          <h1 className="text-xl font-bold mb-1" style={{ color: "#1a2332" }}>
+            Sign in
+          </h1>
+          <p className="text-sm" style={{ color: "#8a9ab0" }}>
+            Access restricted to authorized users
           </p>
         </div>
 
-        {/* Card */}
-        <div className="rounded-2xl p-8"
-          style={{
-            background: "var(--bg-surface)",
-            border: "1px solid var(--border)",
-            boxShadow: "0 25px 60px rgba(0,0,0,0.4)",
-          }}>
-          <h1 className="text-lg font-semibold mb-6" style={{ color: "var(--text-primary)" }}>
-            Sign in to your account
-          </h1>
-
-          <div className="space-y-4">
-            {/* Email */}
-            <div>
-              <label className="block text-xs font-medium mb-1.5"
-                style={{ color: "var(--text-secondary)", fontFamily: "var(--font-mono)" }}>
-                EMAIL
-              </label>
+        {/* Form */}
+        <div className="space-y-4">
+          {/* Email */}
+          <div>
+            <label
+              className="block text-sm font-medium mb-1.5"
+              style={{ color: "#4a5568" }}
+            >
+              Email
+            </label>
+            <div className="relative">
+              <span
+                className="absolute left-3 top-1/2 -translate-y-1/2"
+                style={{ color: "#8a9ab0" }}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </span>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-                placeholder="you@example.com"
-                className="w-full px-4 py-2.5 rounded-lg text-sm transition-colors"
+                placeholder="recruiter@barhunter.com"
                 style={{
-                  background: "var(--bg-raised)",
-                  border: "1px solid var(--border)",
-                  color: "var(--text-primary)",
+                  width: "100%",
+                  padding: "10px 12px 10px 36px",
+                  border: "1px solid #e2e6ed",
+                  borderRadius: "10px",
+                  fontSize: "14px",
+                  background: "#f8f9fb",
+                  color: "#1a2332",
                   outline: "none",
+                  transition: "border-color 0.15s",
                 }}
-                onFocus={(e) => (e.target.style.borderColor = "var(--amber)")}
-                onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
+                onFocus={(e) => (e.target.style.borderColor = "#8b1a1a")}
+                onBlur={(e) => (e.target.style.borderColor = "#e2e6ed")}
               />
             </div>
+          </div>
 
-            {/* Password */}
-            <div>
-              <label className="block text-xs font-medium mb-1.5"
-                style={{ color: "var(--text-secondary)", fontFamily: "var(--font-mono)" }}>
-                PASSWORD
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-                placeholder="••••••••"
-                className="w-full px-4 py-2.5 rounded-lg text-sm transition-colors"
-                style={{
-                  background: "var(--bg-raised)",
-                  border: "1px solid var(--border)",
-                  color: "var(--text-primary)",
-                  outline: "none",
-                }}
-                onFocus={(e) => (e.target.style.borderColor = "var(--amber)")}
-                onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
-              />
-            </div>
-
-            {/* Error */}
-            {error && (
-              <div className="rounded-lg px-4 py-3 text-sm"
-                style={{
-                  background: "rgba(220, 60, 60, 0.1)",
-                  border: "1px solid rgba(220, 60, 60, 0.3)",
-                  color: "#f87171",
-                }}>
-                {error}
-              </div>
-            )}
-
-            {/* Submit */}
-            <button
-              onClick={handleLogin}
-              disabled={loading || !email || !password}
-              className="w-full py-2.5 rounded-lg text-sm font-semibold transition-all mt-2 disabled:opacity-40 disabled:cursor-not-allowed"
+          {/* Password */}
+          <div>
+            <label
+              className="block text-sm font-medium mb-1.5"
+              style={{ color: "#4a5568" }}
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+              placeholder="••••••••••"
               style={{
-                background: loading ? "var(--amber-dim)" : "var(--amber)",
-                color: "#080c14",
-                boxShadow: loading ? "none" : "0 0 20px var(--amber-glow)",
+                width: "100%",
+                padding: "10px 12px",
+                border: "1px solid #e2e6ed",
+                borderRadius: "10px",
+                fontSize: "14px",
+                background: "#f8f9fb",
+                color: "#1a2332",
+                outline: "none",
+                transition: "border-color 0.15s",
+              }}
+              onFocus={(e) => (e.target.style.borderColor = "#8b1a1a")}
+              onBlur={(e) => (e.target.style.borderColor = "#e2e6ed")}
+            />
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div
+              className="rounded-lg px-3 py-2.5 text-sm"
+              style={{
+                background: "rgba(139,26,26,0.07)",
+                border: "1px solid rgba(139,26,26,0.2)",
+                color: "#8b1a1a",
               }}
             >
-              {loading ? "Signing in..." : "Sign in"}
-            </button>
-          </div>
-        </div>
+              {error}
+            </div>
+          )}
 
-        <p className="text-center text-xs mt-6" style={{ color: "var(--text-muted)" }}>
-          Access restricted to authorized recruiters only
-        </p>
+          {/* Login button */}
+          <button
+            onClick={handleLogin}
+            disabled={loading || !email || !password}
+            className="w-full py-3 text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{
+              background: "#8b1a1a",
+              color: "white",
+              borderRadius: "10px",
+              marginTop: "4px",
+              letterSpacing: "0.02em",
+            }}
+            onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = "#7a1616"; }}
+            onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = "#8b1a1a"; }}
+          >
+            {loading ? "Signing in..." : "Login"}
+          </button>
+        </div>
       </div>
     </div>
   );
