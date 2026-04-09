@@ -960,9 +960,9 @@ export default function LeadsClient({ states }: Props) {
       {/* FILTER BAR */}
       <div className="rounded-xl p-6 mb-6"
         style={{ background: "#ffffff", border: "1px solid #e2e6ed", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
-        <div className="grid gap-4 mb-5" style={{ gridTemplateColumns: "1fr 1fr 2fr 1.2fr 1.2fr" }}>
+        <div className="grid gap-3 mb-4" style={{ gridTemplateColumns: "1fr 1fr 2fr 1fr 1fr 1fr" }}>
 
-          {/* State — multi-select with full names */}
+          {/* State */}
           <MultiSelect
             label="State"
             options={states}
@@ -972,7 +972,7 @@ export default function LeadsClient({ states }: Props) {
             labelFn={stateLabel}
           />
 
-          {/* City — multi-select, depends on state */}
+          {/* City */}
           <MultiSelect
             label="City"
             options={cities}
@@ -982,7 +982,7 @@ export default function LeadsClient({ states }: Props) {
             disabled={selStates.length === 0}
           />
 
-          {/* Practice Category — multi-select */}
+          {/* Practice Category */}
           <MultiSelect
             label="Practice Category"
             options={MAIN_CATEGORIES}
@@ -991,31 +991,31 @@ export default function LeadsClient({ states }: Props) {
             placeholder="All categories"
           />
 
-          {/* Admitted After + Before */}
-          <div className="flex gap-2">
-            <div className="flex-1">
-              <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "#4a5568" }}>
-                Admitted After
-              </label>
-              <select value={selYear} onChange={(e) => setSelYear(e.target.value)} className="w-full px-3 py-2.5 text-sm"
-                style={{ background: "#f8f9fb", border: "1px solid #e2e6ed", borderRadius: "8px", color: selYear ? "#1a2332" : "#8a9ab0", outline: "none" }}>
-                <option value="">Any year</option>
-                {ADMISSION_YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
-              </select>
-            </div>
-            <div className="flex-1">
-              <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "#4a5568" }}>
-                Before
-              </label>
-              <select value={selYearBefore} onChange={(e) => setSelYearBefore(e.target.value)} className="w-full px-3 py-2.5 text-sm"
-                style={{ background: "#f8f9fb", border: "1px solid #e2e6ed", borderRadius: "8px", color: selYearBefore ? "#1a2332" : "#8a9ab0", outline: "none" }}>
-                <option value="">Any year</option>
-                {ADMISSION_YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
-              </select>
-            </div>
+          {/* Admitted After */}
+          <div>
+            <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "#4a5568" }}>
+              Admitted After
+            </label>
+            <select value={selYear} onChange={(e) => setSelYear(e.target.value)} className="w-full px-3 py-2.5 text-sm"
+              style={{ background: "#f8f9fb", border: "1px solid #e2e6ed", borderRadius: "8px", color: selYear ? "#1a2332" : "#8a9ab0", outline: "none" }}>
+              <option value="">Any year</option>
+              {ADMISSION_YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
+            </select>
           </div>
 
-          {/* Status — single */}
+          {/* Admitted Before */}
+          <div>
+            <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "#4a5568" }}>
+              Admitted Before
+            </label>
+            <select value={selYearBefore} onChange={(e) => setSelYearBefore(e.target.value)} className="w-full px-3 py-2.5 text-sm"
+              style={{ background: "#f8f9fb", border: "1px solid #e2e6ed", borderRadius: "8px", color: selYearBefore ? "#1a2332" : "#8a9ab0", outline: "none" }}>
+              <option value="">Any year</option>
+              {ADMISSION_YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
+            </select>
+          </div>
+
+          {/* Status */}
           <div>
             <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "#4a5568" }}>
               Status

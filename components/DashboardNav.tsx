@@ -61,13 +61,15 @@ export default function DashboardNav({ userEmail, userRole, userName }: Props) {
 
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-5 py-5">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#8b1a1a"/>
-          <circle cx="12" cy="9" r="2.5" fill="white"/>
-        </svg>
-        <span className="text-base font-bold text-white tracking-tight">
-          Bar<span style={{ color: "#e88080" }}>Hunter</span>
-        </span>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#8b1a1a"/>
+            <circle cx="12" cy="9" r="2.5" fill="white"/>
+          </svg>
+          <span className="text-sm font-bold text-white tracking-tight whitespace-nowrap">
+            Bar<span style={{ color: "#e88080" }}>Hunter</span>
+          </span>
+        </div>
       </div>
 
       {/* Divider */}
