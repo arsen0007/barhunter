@@ -10,7 +10,32 @@ const MAIN_CATEGORIES = [
   "Mediation", "Taxes", "General Classification",
 ];
 
-const ADMISSION_YEARS = Array.from({ length: 35 }, (_, i) => 2024 - i);
+const ADMISSION_YEARS = Array.from({ length: 55 }, (_, i) => 2024 - i);
+
+const STATE_NAMES: Record<string, string> = {
+  // US States
+  AL:"Alabama", AK:"Alaska", AZ:"Arizona", AR:"Arkansas", CA:"California",
+  CO:"Colorado", CT:"Connecticut", DE:"Delaware", FL:"Florida", GA:"Georgia",
+  HI:"Hawaii", ID:"Idaho", IL:"Illinois", IN:"Indiana", IA:"Iowa",
+  KS:"Kansas", KY:"Kentucky", LA:"Louisiana", ME:"Maine", MD:"Maryland",
+  MA:"Massachusetts", MI:"Michigan", MN:"Minnesota", MS:"Mississippi", MO:"Missouri",
+  MT:"Montana", NE:"Nebraska", NV:"Nevada", NH:"New Hampshire", NJ:"New Jersey",
+  NM:"New Mexico", NY:"New York", NC:"North Carolina", ND:"North Dakota", OH:"Ohio",
+  OK:"Oklahoma", OR:"Oregon", PA:"Pennsylvania", RI:"Rhode Island", SC:"South Carolina",
+  SD:"South Dakota", TN:"Tennessee", TX:"Texas", UT:"Utah", VT:"Vermont",
+  VA:"Virginia", WA:"Washington", WV:"West Virginia", WI:"Wisconsin", WY:"Wyoming",
+  DC:"District of Columbia",
+  // Canadian Provinces
+  AB:"Alberta", BC:"British Columbia", MB:"Manitoba", NB:"New Brunswick",
+  NL:"Newfoundland", NS:"Nova Scotia", NT:"Northwest Territories", NU:"Nunavut",
+  ON:"Ontario", PE:"Prince Edward Island", QC:"Quebec", SK:"Saskatchewan", YT:"Yukon",
+};
+
+function stateLabel(code: string): string {
+  return STATE_NAMES[code] ? `${STATE_NAMES[code]} (${code})` : code;
+}
+
+
 
 interface Lead {
   id: string;
@@ -711,6 +736,7 @@ function MultiSelect({
   placeholder = "All",
   includeUnknown = false,
   disabled = false,
+  labelFn,
 }: {
   label: string;
   options: string[];
@@ -719,6 +745,7 @@ function MultiSelect({
   placeholder?: string;
   includeUnknown?: boolean;
   disabled?: boolean;
+  labelFn?: (val: string) => string;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -736,7 +763,7 @@ function MultiSelect({
   }
 
   const allOptions = includeUnknown ? [...options, "__unknown__"] : options;
-  const displayLabel = (v: string) => v === "__unknown__" ? "Unknown / Not Listed" : v;
+  const displayLabel = (v: string) => v === "__unknown__" ? "Unknown / Not Listed" : (labelFn ? labelFn(v) : v);
 
   const buttonLabel = selected.length === 0
     ? placeholder
@@ -811,6 +838,7 @@ export default function LeadsClient({ states }: Props) {
   const [selCities, setSelCities]       = useState<string[]>([]);
   const [selCategories, setSelCategories] = useState<string[]>([]);
   const [selYear, setSelYear]           = useState("");
+  const [selYearBefore, setSelYearBefore] = useState("");
   const [selStatus, setSelStatus]       = useState("Active");
 
   const [cities, setCities] = useState<string[]>([]);
@@ -825,26 +853,25 @@ export default function LeadsClient({ states }: Props) {
   const [showConflict, setShowConflict] = useState(false);
   const [allLeads, setAllLeads] = useState<Lead[]>([]);
 
-  const currentFilters = { state: selStates.join(","), city: selCities.join(","), category: selCategories.join(","), year: selYear, status: selStatus };
+  const currentFilters = { state: selStates.join(","), city: selCities.join(","), category: selCategories.join(","), year: selYear, yearBefore: selYearBefore, status: selStatus };
 
   useEffect(() => {
     setSelCities([]); setCities([]);
     if (selStates.length === 0) return;
-    // Fetch cities for all selected states
-    Promise.all(selStates.map(s => fetch(`/api/cities?state=${s}`).then(r => r.json())))
-      .then(results => {
-        const allCities = Array.from(new Set(results.flatMap(d => d.cities ?? []))).sort();
-        setCities(allCities);
-      });
+    // Single RPC call for all selected states — no row cap
+    fetch(`/api/cities?state=${selStates.join(",")}`)
+      .then(r => r.json())
+      .then(d => setCities(d.cities ?? []));
   }, [JSON.stringify(selStates)]);
 
   function buildParams(extra?: Record<string, string>) {
     const p = new URLSearchParams();
-    if (selStates.length > 0)     p.set("state",       selStates.join(","));
-    if (selCities.length > 0)     p.set("city",        selCities.join(","));
-    if (selCategories.length > 0) p.set("category",    selCategories.join(","));
-    if (selYear)                  p.set("admissionYear", selYear);
-    if (selStatus)                p.set("status",      selStatus);
+    if (selStates.length > 0)     p.set("state",            selStates.join(","));
+    if (selCities.length > 0)     p.set("city",             selCities.join(","));
+    if (selCategories.length > 0) p.set("category",         selCategories.join(","));
+    if (selYear)                  p.set("admissionYear",    selYear);
+    if (selYearBefore)            p.set("admissionBefore",  selYearBefore);
+    if (selStatus)                p.set("status",           selStatus);
     if (extra) Object.entries(extra).forEach(([k, v]) => p.set(k, v));
     return p;
   }
@@ -857,7 +884,7 @@ export default function LeadsClient({ states }: Props) {
     setPage(pageNum); setLoading(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(selStates), JSON.stringify(selCities), JSON.stringify(selCategories), selYear, selStatus]);
+  }, [JSON.stringify(selStates), JSON.stringify(selCities), JSON.stringify(selCategories), selYear, selYearBefore, selStatus]);
 
   // Open conflict modal — fetch ALL leads first
   async function openConflictModal() {
@@ -904,12 +931,12 @@ export default function LeadsClient({ states }: Props) {
   }
 
   function handleReset() {
-    setSelStates([]); setSelCities([]); setSelCategories([]); setSelYear(""); setSelStatus("Active");
+    setSelStates([]); setSelCities([]); setSelCategories([]); setSelYear(""); setSelYearBefore(""); setSelStatus("Active");
     setLeads([]); setTotalCount(null); setHasQueried(false); setPage(1);
   }
 
   const totalPages = totalCount ? Math.ceil(totalCount / 100) : 0;
-  const hasFilters = selStates.length > 0 || selCities.length > 0 || selCategories.length > 0 || selYear || selStatus !== "Active";
+  const hasFilters = selStates.length > 0 || selCities.length > 0 || selCategories.length > 0 || selYear || selYearBefore || selStatus !== "Active";
 
   const selectStyle = (hasValue: boolean) => ({
     background: "var(--bg-surface)", border: "1px solid var(--border-strong)",
@@ -935,13 +962,14 @@ export default function LeadsClient({ states }: Props) {
         style={{ background: "#ffffff", border: "1px solid #e2e6ed", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
         <div className="grid gap-4 mb-5" style={{ gridTemplateColumns: "1fr 1fr 2fr 1.2fr 1.2fr" }}>
 
-          {/* State — multi-select */}
+          {/* State — multi-select with full names */}
           <MultiSelect
             label="State"
             options={states}
             selected={selStates}
             onChange={setSelStates}
             placeholder="All states"
+            labelFn={stateLabel}
           />
 
           {/* City — multi-select, depends on state */}
@@ -951,7 +979,6 @@ export default function LeadsClient({ states }: Props) {
             selected={selCities}
             onChange={setSelCities}
             placeholder="All cities"
-            includeUnknown={true}
             disabled={selStates.length === 0}
           />
 
@@ -962,19 +989,30 @@ export default function LeadsClient({ states }: Props) {
             selected={selCategories}
             onChange={setSelCategories}
             placeholder="All categories"
-            includeUnknown={true}
           />
 
-          {/* Admitted After — single (range filter) */}
-          <div>
-            <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "#4a5568" }}>
-              Admitted After
-            </label>
-            <select value={selYear} onChange={(e) => setSelYear(e.target.value)} className="w-full px-3 py-2.5 text-sm"
-              style={{ background: "#f8f9fb", border: "1px solid #e2e6ed", borderRadius: "8px", color: selYear ? "#1a2332" : "#8a9ab0", outline: "none" }}>
-              <option value="">Any year</option>
-              {ADMISSION_YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
-            </select>
+          {/* Admitted After + Before */}
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "#4a5568" }}>
+                Admitted After
+              </label>
+              <select value={selYear} onChange={(e) => setSelYear(e.target.value)} className="w-full px-3 py-2.5 text-sm"
+                style={{ background: "#f8f9fb", border: "1px solid #e2e6ed", borderRadius: "8px", color: selYear ? "#1a2332" : "#8a9ab0", outline: "none" }}>
+                <option value="">Any year</option>
+                {ADMISSION_YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
+              </select>
+            </div>
+            <div className="flex-1">
+              <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "#4a5568" }}>
+                Before
+              </label>
+              <select value={selYearBefore} onChange={(e) => setSelYearBefore(e.target.value)} className="w-full px-3 py-2.5 text-sm"
+                style={{ background: "#f8f9fb", border: "1px solid #e2e6ed", borderRadius: "8px", color: selYearBefore ? "#1a2332" : "#8a9ab0", outline: "none" }}>
+                <option value="">Any year</option>
+                {ADMISSION_YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
+              </select>
+            </div>
           </div>
 
           {/* Status — single */}
@@ -1020,6 +1058,13 @@ export default function LeadsClient({ states }: Props) {
                 style={{ background: "#fdf5f5", border: "1px solid #f0c0c0", color: "#8b1a1a" }}>
                 After {selYear}
                 <button onClick={() => setSelYear("")} style={{ lineHeight: 1 }}>×</button>
+              </span>
+            )}
+            {selYearBefore && (
+              <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium"
+                style={{ background: "#fdf5f5", border: "1px solid #f0c0c0", color: "#8b1a1a" }}>
+                Before {selYearBefore}
+                <button onClick={() => setSelYearBefore("")} style={{ lineHeight: 1 }}>×</button>
               </span>
             )}
             {selStatus && selStatus !== "Active" && (

@@ -3,19 +3,19 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const supabase = await createClient();
-  const state = new URL(req.url).searchParams.get("state");
+  const stateParam = new URL(req.url).searchParams.get("state");
 
-  if (!state) return NextResponse.json({ cities: [] });
+  if (!stateParam) return NextResponse.json({ cities: [] });
 
+  // Support comma-separated states e.g. ?state=CA,ON
+  const states = stateParam.split(",").map(s => s.trim()).filter(Boolean);
+
+  // RPC function does server-side DISTINCT — bypasses 1000 row REST cap
   const { data, error } = await supabase
-    .from("leads")
-    .select("city")
-    .eq("state", state)
-    .not("city", "is", null)
-    .order("city");
+    .rpc("get_distinct_cities", { p_states: states });
 
   if (error) return NextResponse.json({ cities: [] });
 
-  const cities = [...new Set(data.map((r) => r.city).filter(Boolean))];
+  const cities = (data ?? []).map((r: { city: string }) => r.city).filter(Boolean);
   return NextResponse.json({ cities });
 }

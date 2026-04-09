@@ -10,6 +10,9 @@ export default async function DashboardPage() {
   const { count: activeCount }    = await supabase.from("leads").select("*", { count: "exact", head: true }).eq("member_status", "Active");
   const { count: notActiveCount } = await supabase.from("leads").select("*", { count: "exact", head: true }).eq("member_status", "Not Active");
   const { data: stateRows }       = await supabase.rpc("get_distinct_states");
+  const { data: countryRows }     = await supabase.rpc("get_distinct_states"); // reuse, derive from states
+  const usStates  = (stateRows ?? []).map((r: {state:string}) => r.state).filter((s: string) => !["AB","BC","MB","NB","NL","NS","NT","NU","ON","PE","QC","SK","YT"].includes(s));
+  const caProvinces = (stateRows ?? []).map((r: {state:string}) => r.state).filter((s: string) => ["AB","BC","MB","NB","NL","NS","NT","NU","ON","PE","QC","SK","YT"].includes(s));
   const states = stateRows?.map((r: { state: string }) => r.state) ?? [];
   const activePct = totalLeads && activeCount ? Math.round((activeCount / totalLeads) * 100) : 0;
 
@@ -29,7 +32,7 @@ export default async function DashboardPage() {
       ),
     },
     {
-      label: "States",
+      label: "States / Provinces",
       value: states.length.toString(),
       sub: states.join(", ") || "—",
       color: "#dd6b20",
@@ -37,6 +40,19 @@ export default async function DashboardPage() {
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
           <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      ),
+    },
+    {
+      label: "Countries",
+      value: [usStates.length > 0 ? "US" : null, caProvinces.length > 0 ? "CA" : null].filter(Boolean).join(" · ") || "—",
+      sub: [usStates.length > 0 ? `${usStates.length} US state${usStates.length > 1 ? "s" : ""}` : null, caProvinces.length > 0 ? `${caProvinces.length} CA province${caProvinces.length > 1 ? "s" : ""}` : null].filter(Boolean).join(", "),
+      color: "#805ad5",
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
         </svg>
       ),
     },
