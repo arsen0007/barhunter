@@ -7,12 +7,12 @@ export async function GET(req: NextRequest) {
 
   if (!stateParam) return NextResponse.json({ cities: [] });
 
-  // Support comma-separated states e.g. ?state=CA,ON
   const states = stateParam.split(",").map(s => s.trim()).filter(Boolean);
 
-  // RPC function does server-side DISTINCT — bypasses 1000 row REST cap
+  // .range(0, 4999) bypasses the default 1000 row Supabase RPC cap
   const { data, error } = await supabase
-    .rpc("get_distinct_cities", { p_states: states });
+    .rpc("get_distinct_cities", { p_states: states })
+    .range(0, 49999);
 
   if (error) return NextResponse.json({ cities: [] });
 
